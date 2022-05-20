@@ -1,6 +1,9 @@
+package com.basejava.lesson_2.array_storage;
+
 /**
  * Test for your ArrayStorage implementation
  */
+
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
@@ -15,6 +18,7 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r3);
+        ARRAY_STORAGE.update(r2);
 
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.uuid));
         System.out.println("Size: " + ARRAY_STORAGE.size());
@@ -23,6 +27,8 @@ public class MainTestArrayStorage {
 
         printAll();
         ARRAY_STORAGE.delete(r1.uuid);
+        printAll();
+        ARRAY_STORAGE.save(r2);
         printAll();
         ARRAY_STORAGE.clear();
         printAll();
