@@ -32,6 +32,7 @@ public class MainTestArrayStorage {
         printAll();
         ARRAY_STORAGE.clear();
         printAll();
+        ARRAY_STORAGE.get("uuid33");
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
     }
