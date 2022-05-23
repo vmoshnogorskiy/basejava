@@ -8,17 +8,17 @@ import java.util.Arrays;
 
 public class ArrayStorage {
 
-    protected static final int VOLUME_STORAGE = 10000;
-    Resume[] storage = new Resume[VOLUME_STORAGE];
-    int size = 0;
+    protected static final int STORAGE_LIMIT = 10000;
+    private Resume[] storage = new Resume[STORAGE_LIMIT];
+    private int size = 0;
 
-    void clear() {
+    public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    void save(Resume r) {
-        if (VOLUME_STORAGE <= size) {
+    public void save(Resume r) {
+        if (STORAGE_LIMIT <= size) {
             System.out.println("ERROR: Резюме не может быть добавлено. Хранилище переполнено");
         } else if (findResume(r.uuid) != -1) {
             System.out.println("ERROR: Резюме с указанным UUID уже содержится в хранилище");
@@ -28,7 +28,7 @@ public class ArrayStorage {
         }
     }
 
-    void update(Resume r) {
+    public void update(Resume r) {
         int index = findResume(r.uuid);
         if (index != -1) {
             storage[index] = r;
@@ -37,7 +37,7 @@ public class ArrayStorage {
         }
     }
 
-    Resume get(String uuid) {
+    public Resume get(String uuid) {
         int index = findResume(uuid);
         if (index != -1) {
             return storage[index];
@@ -47,7 +47,7 @@ public class ArrayStorage {
         return null;
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         int index = findResume(uuid);
         if (index != -1) {
             storage[index] = storage[size - 1];
@@ -59,11 +59,11 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 
