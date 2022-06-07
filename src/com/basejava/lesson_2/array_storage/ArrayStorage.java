@@ -33,16 +33,6 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
-    public Resume get(String uuid) {
-        int index = findResume(uuid);
-        if (index != -1) {
-            return storage[index];
-        } else {
-            System.out.println("ERROR: Резюме с указанным uuid не существует в хранилище");
-        }
-        return null;
-    }
-
     public void delete(String uuid) {
         int index = findResume(uuid);
         if (index != -1) {
@@ -59,7 +49,7 @@ public class ArrayStorage extends AbstractArrayStorage {
         return Arrays.copyOf(storage, size);
     }
 
-    private int findResume(String uuid) {
+    protected int findResume(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 return i;

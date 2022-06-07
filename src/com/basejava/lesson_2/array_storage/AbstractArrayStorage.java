@@ -9,4 +9,16 @@ public abstract class AbstractArrayStorage implements Storage {
     public int size() {
         return size;
     }
+
+    public Resume get(String uuid) {
+        int index = findResume(uuid);
+        if (index != -1) {
+            return storage[index];
+        } else {
+            System.out.println("ERROR: Резюме с указанным uuid не существует в хранилище");
+        }
+        return null;
+    }
+
+    protected abstract int findResume(String uuid);
 }
