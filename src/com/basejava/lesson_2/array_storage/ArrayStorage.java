@@ -6,7 +6,7 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 
-public class ArrayStorage {
+public class ArrayStorage implements Storage{
 
     protected static final int STORAGE_LIMIT = 10000;
     private Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -20,7 +20,7 @@ public class ArrayStorage {
     public void save(Resume r) {
         if (STORAGE_LIMIT <= size) {
             System.out.println("ERROR: Резюме не может быть добавлено. Хранилище переполнено");
-        } else if (findResume(r.uuid) != -1) {
+        } else if (findResume(r.getUuid()) != -1) {
             System.out.println("ERROR: Резюме с указанным UUID уже содержится в хранилище");
         } else {
             storage[size] = r;
@@ -29,7 +29,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        int index = findResume(r.uuid);
+        int index = findResume(r.getUuid());
         if (index != -1) {
             storage[index] = r;
         } else {
@@ -69,7 +69,7 @@ public class ArrayStorage {
 
     private int findResume(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (uuid.equals(storage[i].uuid)) {
+            if (uuid.equals(storage[i].getUuid())) {
                 return i;
             }
         }
