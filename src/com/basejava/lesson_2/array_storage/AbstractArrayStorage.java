@@ -1,17 +1,30 @@
 package com.basejava.lesson_2.array_storage;
 
+import java.util.Arrays;
+
 public abstract class AbstractArrayStorage implements Storage {
 
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    public int size() {
-        return size;
+    public void clear() {
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
+    }
+
+    public void update(Resume r) {
+        int index = findResume(r.getUuid());
+        if (index >= 0) {
+            storage[index] = r;
+        } else {
+            System.out.println("ERROR: Указанное Резюме не существует в хранилище");
+        }
     }
 
     public Resume get(String uuid) {
         int index = findResume(uuid);
+
         if (index != -1) {
             return storage[index];
         } else {
@@ -20,7 +33,13 @@ public abstract class AbstractArrayStorage implements Storage {
         return null;
     }
 
-    protected abstract int findResume(String uuid);
+    public Resume[] getAll() {
+        return Arrays.copyOf(storage, size);
+    }
+
+    public int size() {
+        return size;
+    }
 
     protected int saveVerification(Resume r) {
         if (STORAGE_LIMIT <= size) {
@@ -32,4 +51,6 @@ public abstract class AbstractArrayStorage implements Storage {
         }
         return 0;
     }
+
+    protected abstract int findResume(String uuid);
 }
