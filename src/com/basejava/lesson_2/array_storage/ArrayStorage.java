@@ -14,11 +14,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     public void save(Resume r) {
-        if (STORAGE_LIMIT <= size) {
-            System.out.println("ERROR: Резюме не может быть добавлено. Хранилище переполнено");
-        } else if (findResume(r.getUuid()) != -1) {
-            System.out.println("ERROR: Резюме с указанным UUID уже содержится в хранилище");
-        } else {
+        if (saveVerification(r) == 0) {
             storage[size] = r;
             size++;
         }

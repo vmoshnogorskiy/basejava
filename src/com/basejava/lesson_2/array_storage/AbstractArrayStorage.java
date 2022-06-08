@@ -21,4 +21,15 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     protected abstract int findResume(String uuid);
+
+    protected int saveVerification(Resume r) {
+        if (STORAGE_LIMIT <= size) {
+            System.out.println("ERROR: Резюме не может быть добавлено. Хранилище переполнено");
+            return -1;
+        } else if (findResume(r.getUuid()) >= 0) {
+            System.out.println("ERROR: Резюме с указанным UUID уже содержится в хранилище");
+            return -1;
+        }
+        return 0;
+    }
 }
