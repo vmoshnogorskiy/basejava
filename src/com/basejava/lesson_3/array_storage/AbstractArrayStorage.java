@@ -22,6 +22,16 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
+    public void save(Resume r) {
+        if (STORAGE_LIMIT <= size) {
+            System.out.println("ERROR: Резюме не может быть добавлено. Хранилище переполнено");
+        } else if (findResume(r.getUuid()) >= 0) {
+            System.out.println("ERROR: Резюме с указанным UUID уже содержится в хранилище");
+        } else {
+            doSave(r);
+        }
+    }
+
     public Resume get(String uuid) {
         int index = findResume(uuid);
 
@@ -33,6 +43,13 @@ public abstract class AbstractArrayStorage implements Storage {
         return null;
     }
 
+    public void delete(String uuid) {
+        int index = findResume(uuid);
+        if (index >= 0) {
+            doDelete(index);
+        }
+    }
+
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
@@ -41,16 +58,9 @@ public abstract class AbstractArrayStorage implements Storage {
         return size;
     }
 
-    protected int saveVerification(Resume r) {
-        if (STORAGE_LIMIT <= size) {
-            System.out.println("ERROR: Резюме не может быть добавлено. Хранилище переполнено");
-            return -1;
-        } else if (findResume(r.getUuid()) >= 0) {
-            System.out.println("ERROR: Резюме с указанным UUID уже содержится в хранилище");
-            return -1;
-        }
-        return 0;
-    }
-
     protected abstract int findResume(String uuid);
+
+    protected abstract void doSave(Resume r);
+
+    protected abstract void doDelete(int index);
 }
