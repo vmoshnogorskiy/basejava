@@ -12,9 +12,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
         if (indexKey != size) {
             //Сдвигаем элементы массива вправо от Индексв
-            for (int i = size; i > indexKey; i--) {
-                storage[i] = storage[i - 1];
-            }
+            System.arraycopy(storage, indexKey, storage, indexKey + 1, size - indexKey);
         }
         storage[indexKey] = r;
         size++;
