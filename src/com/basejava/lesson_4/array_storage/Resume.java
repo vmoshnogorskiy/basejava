@@ -1,4 +1,6 @@
-package com.basejava.lesson_3.array_storage;
+package com.basejava.lesson_4.array_storage;
+
+import java.util.UUID;
 
 /**
  * Initial resume class
@@ -8,6 +10,10 @@ public class Resume implements Comparable<Resume> {
 
     // Unique identifier
     private final String uuid;
+
+    public Resume() {
+        this(UUID.randomUUID().toString());
+    }
 
     public Resume(String uuid) {
         this.uuid = uuid;

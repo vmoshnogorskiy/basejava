@@ -1,4 +1,4 @@
-package com.basejava.lesson_3.array_storage;
+package com.basejava.lesson_4.array_storage;
 
 public interface Storage {
 

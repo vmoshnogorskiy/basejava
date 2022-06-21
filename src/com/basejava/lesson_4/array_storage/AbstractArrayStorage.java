@@ -1,4 +1,8 @@
-package com.basejava.lesson_3.array_storage;
+package com.basejava.lesson_4.array_storage;
+
+import com.basejava.lesson_4.exception.ExistStorageException;
+import com.basejava.lesson_4.exception.NotExistStorageException;
+import com.basejava.lesson_4.exception.StorageException;
 
 import java.util.Arrays;
 
@@ -18,15 +22,15 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             storage[index] = r;
         } else {
-            System.out.println("ERROR: Указанное Резюме не существует в хранилище");
+            throw new NotExistStorageException(r.getUuid());
         }
     }
 
     public void save(Resume r) {
         if (STORAGE_LIMIT <= size) {
-            System.out.println("ERROR: Резюме не может быть добавлено. Хранилище переполнено");
+            throw new StorageException("ERROR: Резюме не может быть добавлено. Хранилище переполнено", r.getUuid());
         } else if (findResume(r.getUuid()) >= 0) {
-            System.out.println("ERROR: Резюме с указанным UUID уже содержится в хранилище");
+            throw new ExistStorageException(r.getUuid());
         } else {
             doSave(r);
         }
@@ -38,7 +42,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             return storage[index];
         } else {
-            System.out.println("ERROR: Резюме с указанным uuid не существует в хранилище");
+            throw new NotExistStorageException(uuid);
         }
         return null;
     }
@@ -47,6 +51,8 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = findResume(uuid);
         if (index >= 0) {
             doDelete(index);
+        } else if (index >= 0) {
+            throw new NotExistStorageException(uuid);
         }
     }
 
