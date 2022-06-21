@@ -44,7 +44,6 @@ public abstract class AbstractArrayStorage implements Storage {
         } else {
             throw new NotExistStorageException(uuid);
         }
-        return null;
     }
 
     public void delete(String uuid) {
