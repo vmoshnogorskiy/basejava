@@ -1,6 +1,8 @@
 package com.basejava.lesson_4.array_storage;
 
+import com.basejava.lesson_4.exception.ExistStorageException;
 import com.basejava.lesson_4.exception.NotExistStorageException;
+import com.basejava.lesson_4.exception.StorageException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +14,7 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
     private static final String UUID_5 = "uuid5";
+    private static final String UUID_6 = "uuid6";
 
     public AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
@@ -33,20 +36,46 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void update() throws Exception {
+        Resume r = new Resume(UUID_6);
+        storage.save(r);
+        storage.update(r);
+        Assert.assertTrue(r.equals(storage.get(UUID_6)));
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void updateNotExist() throws Exception {
+        storage.update(new Resume());
     }
 
     @Test
     public void save() throws Exception {
         Resume r = new Resume(UUID_4);
         storage.save(r);
-        Assert.assertEquals(r, storage.get("uuid4"));
+        Assert.assertEquals(r, storage.get(UUID_4));
         Assert.assertEquals(4, storage.size());
+    }
+
+    @Test(expected = ExistStorageException.class)
+    public void saveExist() throws Exception {
+        storage.save(new Resume(UUID_3));
+    }
+
+    @Test(expected = StorageException.class)
+    public void saveOverflow() throws Exception {
+        try {
+            for (int i = storage.size(); i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
+                storage.save(new Resume());
+            }
+        } catch (StorageException e) {
+            Assert.fail();
+        }
+        storage.save(new Resume());
     }
 
     @Test
     public void get() throws Exception {
         Resume r = new Resume(UUID_5);
-        storage.save(r) cas
+        storage.save(r);
         Assert.assertEquals(r, storage.get(UUID_5));
     }
 
@@ -64,7 +93,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void deleteNotExist() throws Exception {
-        storage.delete("dummy");
+        storage.delete("dummy1");
     }
 
     @Test

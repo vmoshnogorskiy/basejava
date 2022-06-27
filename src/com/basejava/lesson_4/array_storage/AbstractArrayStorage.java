@@ -50,7 +50,7 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = findResume(uuid);
         if (index >= 0) {
             doDelete(index);
-        } else if (index >= 0) {
+        } else {
             throw new NotExistStorageException(uuid);
         }
     }
