@@ -67,7 +67,7 @@ public abstract class AbstractArrayStorageTest {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
-            Assert.fail();
+            Assert.fail("Ошибка: переполнение раньше времени");
         }
         storage.save(new Resume());
     }
@@ -93,7 +93,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void deleteNotExist() throws Exception {
-        storage.delete("dummy1");
+        storage.delete("dummy");
     }
 
     @Test
