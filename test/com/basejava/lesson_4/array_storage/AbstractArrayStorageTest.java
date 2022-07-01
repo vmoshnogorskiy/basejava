@@ -7,8 +7,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 public abstract class AbstractArrayStorageTest {
     private final Storage storage;
     private static final String UUID_1 = "uuid1";
@@ -38,13 +36,15 @@ public abstract class AbstractArrayStorageTest {
     public void clear() throws Exception {
         storage.clear();
         assertSize(0);
-        Arrays.equals(storage.getAll(), new Resume[0]);
+        Assert.assertArrayEquals(storage.getAll(), new Resume[0]);
     }
 
     @Test
     public void update() throws Exception {
-        storage.update(RESUME_2);
-        Assert.assertSame(RESUME_2, storage.get(RESUME_2.getUuid()));
+        Resume expected = new Resume(UUID_2);
+        storage.update(expected);
+        Assert.assertSame(expected, storage.get(expected.getUuid()));
+        assertGet(expected);
     }
 
     @Test(expected = NotExistStorageException.class)
