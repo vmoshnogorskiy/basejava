@@ -1,58 +1,27 @@
 package com.basejava.lesson_5.array_storage;
 
-import com.basejava.lesson_5.exception.ExistStorageException;
-import com.basejava.lesson_5.exception.NotExistStorageException;
-import com.basejava.lesson_5.exception.StorageException;
-
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public void update(Resume r) {
-        int index = findResume(r.getUuid());
-        if (index >= 0) {
-            storage[index] = r;
-        } else {
-            throw new NotExistStorageException(r.getUuid());
-        }
+    @Override
+    protected void doUpdate(Resume resume, Object key) {
+        storage[(Integer) key] = resume;
     }
 
-    public void save(Resume r) {
-        if (STORAGE_LIMIT <= size) {
-            throw new StorageException("ERROR: Резюме не может быть добавлено. Хранилище переполнено", r.getUuid());
-        } else if (findResume(r.getUuid()) >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            doSave(r);
-        }
-    }
-
-    public Resume get(String uuid) {
-        int index = findResume(uuid);
-
-        if (index >= 0) {
-            return storage[index];
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
-    }
-
-    public void delete(String uuid) {
-        int index = findResume(uuid);
-        if (index >= 0) {
-            doDelete(index);
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+    @Override
+    protected Resume doGet(Object key) {
+        return storage[(Integer) key];
     }
 
     public Resume[] getAll() {
@@ -63,9 +32,17 @@ public abstract class AbstractArrayStorage implements Storage {
         return size;
     }
 
-    protected abstract int findResume(String uuid);
+    @Override
+    protected boolean isExist(Object key) {
+        return (Integer) key >= 0;
+    }
+
+    @Override
+    protected boolean isOverflowLimit() {
+        return STORAGE_LIMIT <= size;
+    }
+
+    protected abstract Integer findKey(String uuid);
 
     protected abstract void doSave(Resume r);
-
-    protected abstract void doDelete(int index);
 }
