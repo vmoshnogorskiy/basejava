@@ -30,7 +30,6 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         Object key = findKey(uuid);
-
         if (isExist(key)) {
             return doGet(key);
         } else {

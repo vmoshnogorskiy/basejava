@@ -10,7 +10,8 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Object findKey(String uuid) {
-        return storage.indexOf(uuid);
+        Resume searchKey = new Resume(uuid);
+        return storage.indexOf(searchKey);
     }
 
     @Override
@@ -20,7 +21,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected boolean isOverflowLimit() {
-        return false;
+        return !(size < Integer.MAX_VALUE);
     }
 
     @Override
@@ -36,7 +37,9 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doDelete(Object key) {
-        storage.remove((Integer) key);
+        int index = (Integer) key;
+        storage.remove(index);
+        size--;
     }
 
     @Override
@@ -47,6 +50,7 @@ public class ListStorage extends AbstractStorage {
     @Override
     public void clear() {
         storage.clear();
+        size = 0;
     }
 
     @Override
