@@ -10,12 +10,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Object findKey(String uuid) {
-        return null;
+        return storage.indexOf(uuid);
     }
 
     @Override
     protected void doUpdate(Resume resume, Object key) {
-
+        storage.set((Integer) key, resume);
     }
 
     @Override
@@ -25,32 +25,33 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doSave(Resume r) {
-
+        storage.add(r);
+        size++;
     }
 
     @Override
     protected Resume doGet(Object key) {
-        return null;
+        return storage.get((Integer) key);
     }
 
     @Override
     protected void doDelete(Object key) {
-
+        storage.remove((Integer) key);
     }
 
     @Override
     protected boolean isExist(Object key) {
-        return false;
+        return (Integer) key >= 0;
     }
 
     @Override
     public void clear() {
-
+        storage.clear();
     }
 
     @Override
     public Resume[] getAll() {
-        return new Resume[0];
+        return storage.toArray(new Resume[size]);
     }
 
     @Override
