@@ -1,8 +1,9 @@
-package com.basejava.lesson_5.array_storage;
+package com.basejava.storage;
 
-import com.basejava.lesson_5.exception.ExistStorageException;
-import com.basejava.lesson_5.exception.NotExistStorageException;
-import com.basejava.lesson_5.exception.StorageException;
+import com.basejava.exception.ExistStorageException;
+import com.basejava.exception.NotExistStorageException;
+import com.basejava.exception.StorageException;
+import com.basejava.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 

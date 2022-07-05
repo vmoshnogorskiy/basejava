@@ -1,4 +1,6 @@
-package com.basejava.lesson_4.array_storage;
+package com.basejava.storage;
+
+import com.basejava.model.Resume;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

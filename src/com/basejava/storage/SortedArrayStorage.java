@@ -1,4 +1,6 @@
-package com.basejava.lesson_4.array_storage;
+package com.basejava.storage;
+
+import com.basejava.model.Resume;
 
 import java.util.Arrays;
 
@@ -19,15 +21,15 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void doDelete(int index) {
-        for (int i = index; i < size && size < STORAGE_LIMIT; i++) {
+    protected void doDelete(Object key) {
+        for (int i = (Integer) key; i < size && size < STORAGE_LIMIT; i++) {
             storage[i] = storage[i + 1];
         }
         size--;
     }
 
     @Override
-    protected int findResume(String uuid) {
+    protected Integer findKey(String uuid) {
         Resume searchKey = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }

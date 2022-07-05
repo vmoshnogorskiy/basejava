@@ -1,4 +1,4 @@
-package com.basejava.lesson_4.array_storage;
+package com.basejava.storage;
 
 public class SortedArrayStorageTest extends AbstractArrayStorageTest {
 

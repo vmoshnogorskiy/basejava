@@ -1,4 +1,6 @@
-package com.basejava.lesson_5.array_storage;
+package com.basejava.storage;
+
+import com.basejava.model.Resume;
 
 /**
  * Array based storage for Resumes

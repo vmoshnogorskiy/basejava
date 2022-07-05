@@ -1,4 +1,4 @@
-package com.basejava.lesson_5.exception;
+package com.basejava.exception;
 
 public class ExistStorageException extends StorageException {
     public ExistStorageException(String uuid) {
