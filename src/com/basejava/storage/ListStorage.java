@@ -8,12 +8,15 @@ import java.util.List;
 public class ListStorage extends AbstractStorage {
 
     protected List<Resume> storage = new ArrayList<>();
-    protected int size = 0;
 
     @Override
     protected Object findKey(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return storage.indexOf(searchKey);
+        for (int i = 0; i < storage.size(); i++) {
+            if (storage.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -22,14 +25,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isOverflowLimit() {
-        return !(size < Integer.MAX_VALUE);
-    }
-
-    @Override
     protected void doSave(Resume r) {
         storage.add(r);
-        size++;
     }
 
     @Override
@@ -41,7 +38,6 @@ public class ListStorage extends AbstractStorage {
     protected void doDelete(Object key) {
         int index = (Integer) key;
         storage.remove(index);
-        size--;
     }
 
     @Override
@@ -52,16 +48,15 @@ public class ListStorage extends AbstractStorage {
     @Override
     public void clear() {
         storage.clear();
-        size = 0;
     }
 
     @Override
     public Resume[] getAll() {
-        return storage.toArray(new Resume[size]);
+        return storage.toArray(new Resume[storage.size()]);
     }
 
     @Override
     public int size() {
-        return size;
+        return storage.size();
     }
 }

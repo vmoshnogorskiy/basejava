@@ -1,5 +1,7 @@
 package com.basejava.storage;
 
+import com.basejava.exception.ExistStorageException;
+import com.basejava.exception.StorageException;
 import com.basejava.model.Resume;
 
 import java.util.Arrays;
@@ -14,6 +16,17 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
+    }
+
+    @Override
+    public void save(Resume r) {
+        if (isOverflowLimit()) {
+            throw new StorageException("ERROR: Резюме не может быть добавлено. Хранилище переполнено", r.getUuid());
+        } else if (isExist(findKey(r.getUuid()))) {
+            throw new ExistStorageException(r.getUuid());
+        } else {
+            doSave(r);
+        }
     }
 
     @Override
@@ -39,7 +52,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return (Integer) key >= 0;
     }
 
-    @Override
     protected boolean isOverflowLimit() {
         return STORAGE_LIMIT <= size;
     }
