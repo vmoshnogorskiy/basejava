@@ -2,6 +2,7 @@ package com.basejava.storage;
 
 import com.basejava.model.Resume;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class MapStorage extends AbstractStorage {
@@ -48,7 +49,9 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        return storage.values().toArray(new Resume[storage.size()]);
+        Resume[] arrayStorage = storage.values().toArray(new Resume[storage.size()]);
+        Arrays.sort(arrayStorage);
+        return arrayStorage;
     }
 
     @Override
