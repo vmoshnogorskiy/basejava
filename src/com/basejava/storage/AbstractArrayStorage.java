@@ -20,12 +20,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public void save(Resume r) {
+        int key = findKey(r.getUuid());
         if (isOverflowLimit()) {
             throw new StorageException("ERROR: Резюме не может быть добавлено. Хранилище переполнено", r.getUuid());
-        } else if (isExist(findKey(r.getUuid()))) {
+        } else if (isExist(key)) {
             throw new ExistStorageException(r.getUuid());
         } else {
-            doSave(r);
+            doSave(r, key);
         }
     }
 
@@ -58,5 +59,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected abstract Integer findKey(String uuid);
 
-    protected abstract void doSave(Resume r);
+    protected abstract void doSave(Resume r, int index);
 }

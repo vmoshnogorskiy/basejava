@@ -7,8 +7,7 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void doSave(Resume r) {
-        int indexKey = Arrays.binarySearch(storage, 0, size, r);
+    protected void doSave(Resume r, int indexKey) {
         //Индекс, под которым нужно хранить резюме
         indexKey = -(indexKey + 1);
 
