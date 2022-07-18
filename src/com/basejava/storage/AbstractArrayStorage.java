@@ -13,6 +13,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
+    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName,
+                    String::compareTo)
+            .thenComparing(Resume::getUuid,
+                    (s1, s2) -> {
+                        return s1.compareTo(s2);
+                    });
 
     @Override
     public void clear() {
@@ -43,15 +49,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     public List<Resume> getAllSorted() {
-        Arrays.sort(storage, Comparator.comparing(
-                        Resume::getFullName,
-                        String::compareTo
-                ).thenComparing(
-                        Resume::getUuid,
-                        (s1, s2) -> {
-                            return s1.compareTo(s2);
-                        })
-        );
+        Arrays.sort(storage, RESUME_COMPARATOR);
         return Arrays.asList(storage);
     }
 
