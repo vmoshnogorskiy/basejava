@@ -7,6 +7,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ListStorageTest {
 
     private final Storage storage = new ListStorage();
@@ -82,13 +85,16 @@ public class ListStorageTest {
     public void clear() throws Exception {
         storage.clear();
         assertSize(0);
-        Assert.assertArrayEquals(storage.getAll(), new Resume[0]);
+        Assert.assertEquals(storage.getAllSorted(), new ArrayList<Resume>());
     }
 
     @Test
-    public void getAll() throws Exception {
-        Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
-        Assert.assertArrayEquals(storage.getAll(), expected);
+    public void getAllSorted() throws Exception {
+        List<Resume> expected = new ArrayList<Resume>();
+        expected.add(0, RESUME_1);
+        expected.add(1, RESUME_2);
+        expected.add(2, RESUME_3);
+        Assert.assertEquals(expected, storage.getAllSorted());
         assertSize(3);
     }
 

@@ -3,12 +3,13 @@ package com.basejava.storage;
 import com.basejava.exception.ExistStorageException;
 import com.basejava.exception.NotExistStorageException;
 import com.basejava.exception.StorageException;
-import com.basejava.storage.AbstractArrayStorage;
 import com.basejava.model.Resume;
-import com.basejava.storage.Storage;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractArrayStorageTest {
     private final Storage storage;
@@ -18,10 +19,10 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_4 = "uuid4";
     private static final String UUID_NOT_EXIST = "dummy";
 
-    private static final Resume RESUME_1 = new Resume(UUID_1);
-    private static final Resume RESUME_2 = new Resume(UUID_2);
-    private static final Resume RESUME_3 = new Resume(UUID_3);
-    private static final Resume RESUME_4 = new Resume(UUID_4);
+    private static final Resume RESUME_1 = new Resume(UUID_1, "Иванов Иван Иванович");
+    private static final Resume RESUME_2 = new Resume(UUID_2, "Петров Петр Петрович");
+    private static final Resume RESUME_3 = new Resume(UUID_3, "Сидоров Сидор Сидорович");
+    private static final Resume RESUME_4 = new Resume(UUID_4, "Михайлов Михаил Михайлович");
 
     public AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
@@ -39,7 +40,7 @@ public abstract class AbstractArrayStorageTest {
     public void clear() throws Exception {
         storage.clear();
         assertSize(0);
-        Assert.assertArrayEquals(storage.getAll(), new Resume[0]);
+        Assert.assertEquals(storage.getAllSorted(), new ArrayList<Resume>());
     }
 
     @Test
@@ -105,9 +106,12 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test
-    public void getAll() throws Exception {
-        Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
-        Assert.assertArrayEquals(storage.getAll(), expected);
+    public void getAllSorted() throws Exception {
+        List<Resume> expected = new ArrayList<Resume>();
+        expected.add(0, RESUME_1);
+        expected.add(1, RESUME_2);
+        expected.add(2, RESUME_3);
+        Assert.assertEquals(expected, storage.getAllSorted());
         assertSize(3);
     }
 
