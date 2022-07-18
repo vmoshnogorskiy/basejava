@@ -43,13 +43,16 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     public List<Resume> getAllSorted() {
-        Arrays.sort(storage, getComparator());
+        Arrays.sort(storage, Comparator.comparing(
+                        Resume::getFullName,
+                        String::compareTo
+                ).thenComparing(
+                        Resume::getUuid,
+                        (s1, s2) -> {
+                            return s1.compareTo(s2);
+                        })
+        );
         return Arrays.asList(storage);
-    }
-
-    private Comparator<Resume> getComparator() {
-        return Comparator.comparing(Resume::getFullName,
-                Comparator.naturalOrder());
     }
 
     public int size() {

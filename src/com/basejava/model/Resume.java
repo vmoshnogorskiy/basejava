@@ -26,11 +26,11 @@ public class Resume implements Comparable<Resume> {
     }
 
     public String getUuid() {
-        return uuid;
+        return this.uuid;
     }
 
     public String getFullName() {
-        return fullName;
+        return this.fullName;
     }
 
     public void setFullName(String fullName) {
