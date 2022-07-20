@@ -2,11 +2,12 @@ package com.basejava.storage;
 
 import com.basejava.model.Resume;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
 
     protected HashMap<String, Resume> storage = new HashMap<String, Resume>();
 
@@ -45,7 +46,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected List<Resume> doGetAll() {
-        return Collections.emptyList();
+        return new ArrayList<>(storage.values());
     }
 
     @Override
