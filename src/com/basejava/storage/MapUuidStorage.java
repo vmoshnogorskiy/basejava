@@ -3,13 +3,13 @@ package com.basejava.storage;
 import com.basejava.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapUuidStorage extends AbstractStorage {
 
-    protected HashMap<String, Resume> storage = new HashMap<String, Resume>();
+    protected Map<String, Resume> storage = new HashMap<String, Resume>();
 
     @Override
     protected Object findKey(String uuid) {
@@ -52,13 +52,6 @@ public class MapUuidStorage extends AbstractStorage {
     @Override
     public void clear() {
         storage.clear();
-    }
-
-    @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> listStorage = (List<Resume>) storage.values();
-        Collections.sort(listStorage);
-        return listStorage;
     }
 
     @Override
