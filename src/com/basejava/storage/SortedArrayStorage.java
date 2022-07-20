@@ -29,7 +29,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected Integer findKey(String uuid) {
-        Resume searchKey = new Resume("Technical");
+        Resume searchKey = new Resume(uuid, "Technical");
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 }
