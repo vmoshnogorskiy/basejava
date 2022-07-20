@@ -44,6 +44,11 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
+    protected List<Resume> doGetAll() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public void clear() {
         storage.clear();
     }

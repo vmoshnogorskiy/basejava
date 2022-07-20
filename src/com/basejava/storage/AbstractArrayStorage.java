@@ -5,7 +5,6 @@ import com.basejava.exception.StorageException;
 import com.basejava.model.Resume;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
@@ -13,12 +12,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
-    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName,
-                    String::compareTo)
-            .thenComparing(Resume::getUuid,
-                    (s1, s2) -> {
-                        return s1.compareTo(s2);
-                    });
 
     @Override
     public void clear() {
@@ -39,6 +32,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
+    protected List<Resume> doGetAll() {
+        return Arrays.asList(Arrays.copyOf(storage, size));
+    }
+
+    @Override
     protected void doUpdate(Resume resume, Object key) {
         storage[(Integer) key] = resume;
     }
@@ -46,11 +44,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     protected Resume doGet(Object key) {
         return storage[(Integer) key];
-    }
-
-    public List<Resume> getAllSorted() {
-        Arrays.sort(storage, RESUME_COMPARATOR);
-        return Arrays.asList(storage);
     }
 
     public int size() {
