@@ -1,6 +1,8 @@
-package com.basejava.storage;
+package com.basejava;
 
 import com.basejava.model.Resume;
+import com.basejava.storage.SortedArrayStorage;
+import com.basejava.storage.Storage;
 
 /**
  * Test for your ArrayStorage implementation

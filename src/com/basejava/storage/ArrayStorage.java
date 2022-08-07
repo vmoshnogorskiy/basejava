@@ -9,7 +9,7 @@ import com.basejava.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void doSave(Resume r, Object key) {
+    protected void insertResume(Resume r, Object key) {
         storage[size] = r;
         size++;
     }

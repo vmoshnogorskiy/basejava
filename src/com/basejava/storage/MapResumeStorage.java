@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MapResumeStorage extends AbstractStorage {
 
-    protected HashMap<String, Resume> storage = new HashMap<>();
+    protected final HashMap<String, Resume> storage = new HashMap<>();
 
     @Override
     protected Resume findKey(String uuid) {

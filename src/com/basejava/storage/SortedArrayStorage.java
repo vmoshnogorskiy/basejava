@@ -7,7 +7,7 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void doSave(Resume r, Object indexKey) {
+    protected void insertResume(Resume r, Object indexKey) {
         //Индекс, под которым нужно хранить резюме
         indexKey = -(((Integer) indexKey) + 1);
 
@@ -21,9 +21,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void doDelete(Object key) {
-        for (int i = (Integer) key; i < size && size < STORAGE_LIMIT; i++) {
-            storage[i] = storage[i + 1];
-        }
+        int index = (Integer) key;
+        System.arraycopy(storage, index +1, storage, index, size - index - 1);
         size--;
     }
 
