@@ -24,7 +24,7 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doSave(Resume r, int index) {
+    protected void doSave(Resume r, Object key) {
         storage.put(r.getUuid(), r);
     }
 

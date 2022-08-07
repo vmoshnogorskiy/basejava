@@ -7,15 +7,15 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void doSave(Resume r, int indexKey) {
+    protected void doSave(Resume r, Object indexKey) {
         //Индекс, под которым нужно хранить резюме
-        indexKey = -(indexKey + 1);
+        indexKey = -(((Integer) indexKey) + 1);
 
-        if (indexKey != size) {
+        if ((Integer) indexKey != size) {
             //Сдвигаем элементы массива вправо от Индексв
-            System.arraycopy(storage, indexKey, storage, indexKey + 1, size - indexKey);
+            System.arraycopy(storage, (Integer) indexKey, storage, ((Integer) indexKey) + 1, size - ((Integer) indexKey));
         }
-        storage[indexKey] = r;
+        storage[(Integer) indexKey] = r;
         size++;
     }
 

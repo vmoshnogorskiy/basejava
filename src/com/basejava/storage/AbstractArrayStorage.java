@@ -60,6 +60,4 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     protected abstract Integer findKey(String uuid);
-
-    protected abstract void doSave(Resume r, int index);
 }
