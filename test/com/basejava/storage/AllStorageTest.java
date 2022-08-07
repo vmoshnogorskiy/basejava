@@ -6,7 +6,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
         {
-                com.basejava.storage.ArrayStorageTest.class,
+                ArrayStorageTest.class,
                 SortedArrayStorageTest.class,
                 ListStorageTest.class,
                 MapResumeStorageTest.class,
