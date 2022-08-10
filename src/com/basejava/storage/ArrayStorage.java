@@ -9,14 +9,14 @@ import com.basejava.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void insertResume(Resume r, Object key) {
+    protected void insertResume(Resume r, Integer key) {
         storage[size] = r;
         size++;
     }
 
     @Override
-    protected void doDelete(Object key) {
-        storage[(Integer) key] = storage[size - 1];
+    protected void doDelete(Integer key) {
+        storage[key] = storage[size - 1];
         storage[size - 1] = null;
         size--;
     }
