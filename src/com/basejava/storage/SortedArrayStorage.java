@@ -10,11 +10,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     protected void insertResume(Resume r, Object indexKey) {
         //Индекс, под которым нужно хранить резюме
         indexKey = -(((Integer) indexKey) + 1);
-
-        if ((Integer) indexKey != size) {
-            //Сдвигаем элементы массива вправо от Индексв
-            System.arraycopy(storage, (Integer) indexKey, storage, ((Integer) indexKey) + 1, size - ((Integer) indexKey));
-        }
+        System.arraycopy(storage, (Integer) indexKey, storage, (Integer) indexKey + 1, size - ((Integer) indexKey));
         storage[(Integer) indexKey] = r;
         size++;
     }
@@ -22,7 +18,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected void doDelete(Object key) {
         int index = (Integer) key;
-        System.arraycopy(storage, index +1, storage, index, size - index - 1);
+        System.arraycopy(storage, index + 1, storage, index, size - index - 1);
         size--;
     }
 
