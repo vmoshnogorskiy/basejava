@@ -1,9 +1,5 @@
 package com.basejava.model;
 
-import java.util.HashMap;
-import java.util.List;
+public abstract class Section {
 
-public class Section {
-
-    protected final HashMap<SectionType, List<String>> sections = new HashMap<>();
 }
