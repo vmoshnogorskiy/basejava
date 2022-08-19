@@ -32,7 +32,7 @@ public class Organization {
         if (!startDate.equals(that.startDate)) return false;
         if (!endDate.equals(that.endDate)) return false;
         if (!title.equals(that.title)) return false;
-        return description != null ? description.equals(that.description) : that.description == null;
+        return Objects.equals(description, that.description);
     }
 
     @Override
