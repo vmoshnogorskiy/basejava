@@ -19,10 +19,10 @@ public abstract class AbstractStorageTest {
     private static final String UUID_4 = "uuid4";
     private static final String UUID_NOT_EXIST = "dummy";
 
-    private static final Resume RESUME_1 = new Resume(UUID_1, "Иванов Иван Иванович");
-    private static final Resume RESUME_2 = new Resume(UUID_2, "Петров Петр Петрович");
-    private static final Resume RESUME_3 = new Resume(UUID_3, "Сидоров Сидор Сидорович");
-    private static final Resume RESUME_4 = new Resume(UUID_4, "Михайлов Михаил Михайлович");
+    private static final Resume RESUME_1 = ResumeTestData.getTestResume(UUID_1, "Иванов Иван Иванович");
+    private static final Resume RESUME_2 = ResumeTestData.getTestResume(UUID_2, "Петров Петр Петрович");
+    private static final Resume RESUME_3 = ResumeTestData.getTestResume(UUID_3, "Сидоров Сидор Сидорович");
+    private static final Resume RESUME_4 = ResumeTestData.getTestResume(UUID_4, "Михайлов Михаил Михайлович");
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -45,7 +45,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume expected = new Resume(UUID_2, "Dummy");
+        Resume expected = ResumeTestData.getTestResume(UUID_2, "Dummy");
         storage.update(expected);
         Assert.assertSame(expected, storage.get(expected.getUuid()));
         assertGet(expected);
@@ -53,7 +53,7 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() throws Exception {
-        storage.update(new Resume(UUID_NOT_EXIST, "Dummy"));
+        storage.update(ResumeTestData.getTestResume(UUID_NOT_EXIST, "Dummy"));
     }
 
     @Test
