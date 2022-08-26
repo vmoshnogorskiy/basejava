@@ -47,7 +47,7 @@ public class Organization {
                 '}';
     }
 
-    private class Property {
+    public static class Property {
         private final LocalDate startDate;
         private final LocalDate endDate;
         private final String description;
@@ -58,6 +58,22 @@ public class Organization {
             this.endDate = endDate;
             this.title = title;
             this.description = description;
+        }
+
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getTitle() {
+            return title;
         }
 
         @Override
