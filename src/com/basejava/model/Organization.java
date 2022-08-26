@@ -17,20 +17,6 @@ public class Organization {
         this.properties.add(new Property(startDate, endDate, title, description));
     }
 
-    private class Property {
-        private final LocalDate startDate;
-        private final LocalDate endDate;
-        private final String description;
-        private final String title;
-
-        private Property(LocalDate startDate, LocalDate endDate, String title, String description) {
-            this.startDate = startDate;
-            this.endDate = endDate;
-            this.title = title;
-            this.description = description;
-        }
-    }
-
     public void addProperty(LocalDate startDate, LocalDate endDate, String title, String description) {
         this.properties.add(new Property(startDate, endDate, title, description));
     }
@@ -59,5 +45,52 @@ public class Organization {
                 "homePage=" + homePage +
                 ", properties=" + properties +
                 '}';
+    }
+
+    private class Property {
+        private final LocalDate startDate;
+        private final LocalDate endDate;
+        private final String description;
+        private final String title;
+
+        public Property(LocalDate startDate, LocalDate endDate, String title, String description) {
+            this.startDate = startDate;
+            this.endDate = endDate;
+            this.title = title;
+            this.description = description;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Property property = (Property) o;
+
+            if (!startDate.equals(property.startDate)) return false;
+            if (!endDate.equals(property.endDate)) return false;
+            if (!Objects.equals(description, property.description))
+                return false;
+            return title.equals(property.title);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = startDate.hashCode();
+            result = 31 * result + endDate.hashCode();
+            result = 31 * result + (description != null ? description.hashCode() : 0);
+            result = 31 * result + title.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Property{" +
+                    "startDate=" + startDate +
+                    ", endDate=" + endDate +
+                    ", description='" + description + '\'' +
+                    ", title='" + title + '\'' +
+                    '}';
+        }
     }
 }
