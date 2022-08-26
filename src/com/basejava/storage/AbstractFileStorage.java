@@ -28,18 +28,19 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         File[] list = directory.listFiles();
         if (list == null) {
             throw new StorageException("Directory is already empty");
-        } else {
-            for (File file : list
-            ) {
-                doDelete(file);
-            }
+        }
+        for (File file : list) {
+            doDelete(file);
         }
     }
 
     @Override
     public int size() {
         File[] list = directory.listFiles();
-        return list == null ? 0 : list.length;
+        if (list == null) {
+            throw new StorageException("Unable to read directory contents");
+        }
+        return list.length;
     }
 
     @Override
@@ -81,18 +82,21 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume doGet(File file) {
-        return doRead(file);
+        try {
+            return doRead(file);
+        } catch (IOException e) {
+            throw new StorageException("Unable to read file", file.getName(), e);
+        }
     }
 
     @Override
     protected List<Resume> doGetAll() {
         List<Resume> list = new ArrayList<>();
         File[] files = directory.listFiles();
-        if(files == null) {
+        if (files == null) {
             throw new StorageException(directory + " is empty");
         }
-        for (File file : files
-        ) {
+        for (File file : files) {
             if (!directory.isDirectory()) {
                 list.add(doGet(file));
             }
@@ -102,5 +106,5 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     protected abstract void doWrite(Resume r, File file) throws IOException;
 
-    protected abstract Resume doRead(File file);
+    protected abstract Resume doRead(File file) throws IOException;
 }
