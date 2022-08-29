@@ -44,7 +44,7 @@ public class ResumeTestData {
         experienceList.add(new Organization("Java Online Projects",
                         "http://javaops.ru/",
                         LocalDate.of(2013, 10, 1),
-                        LocalDate.now(),
+                        Organization.Property.NOW,
                         "Автор проекта.",
                         "Создание, организация и проведение Java онлайн проектов и стажировок."
                 )

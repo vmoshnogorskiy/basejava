@@ -53,6 +53,8 @@ public class Organization {
         private final String description;
         private final String title;
 
+        public static final LocalDate NOW = LocalDate.of(3000, 1, 1);
+
         public Property(LocalDate startDate, LocalDate endDate, String title, String description) {
             this.startDate = startDate;
             this.endDate = endDate;
