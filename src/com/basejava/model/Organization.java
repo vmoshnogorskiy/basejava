@@ -1,24 +1,21 @@
 package com.basejava.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class Organization {
     private final Link homePage;
-    private final List<Property> properties = new ArrayList<>();
+    private final List<Property> properties;
 
-    public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
-        Objects.requireNonNull(startDate, "startDate must not be null");
-        Objects.requireNonNull(endDate, "endDate must not be null");
-        Objects.requireNonNull(title, "title must not be null");
-        this.homePage = new Link(name, url);
-        this.properties.add(new Property(startDate, endDate, title, description));
+    public Organization(String name, String url, Property... properties) {
+        this(new Link(name, url), Arrays.asList(properties));
     }
 
-    public void addProperty(LocalDate startDate, LocalDate endDate, String title, String description) {
-        this.properties.add(new Property(startDate, endDate, title, description));
+    public Organization(Link homePage, List<Property> properties) {
+        this.homePage = homePage;
+        this.properties = properties;
     }
 
     @Override
@@ -55,7 +52,14 @@ public class Organization {
 
         public static final LocalDate NOW = LocalDate.of(3000, 1, 1);
 
+        public Property(LocalDate startDate, String description, String title) {
+            this(startDate, NOW, title, description);
+        }
+
         public Property(LocalDate startDate, LocalDate endDate, String title, String description) {
+            Objects.requireNonNull(startDate, "startDate must not be null");
+            Objects.requireNonNull(endDate, "endDate must not be null");
+            Objects.requireNonNull(title, "title must not be null");
             this.startDate = startDate;
             this.endDate = endDate;
             this.title = title;
