@@ -82,7 +82,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return doRead(new BufferedOutputStream(new FileOutputStream(file)));
+            return doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Unable to read file", file.getName(), e);
         }
@@ -105,5 +105,5 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     protected abstract void doWrite(Resume r, OutputStream file) throws IOException;
 
-    protected abstract Resume doRead(OutputStream file) throws IOException;
+    protected abstract Resume doRead(InputStream file) throws IOException;
 }

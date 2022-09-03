@@ -27,7 +27,7 @@ public class MainFile {
 
         //вызов рекурсивного обхода подкаталогов
         try {
-            MainFile.findFiles(dir);
+            MainFile.findFiles(dir, "");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -39,14 +39,16 @@ public class MainFile {
         }
     }
 
-    public static void findFiles(File file) throws Exception {
+    public static void findFiles(File file, String prefix) throws Exception {
         if (file.isDirectory()) {
+            prefix += "\t";
+            System.out.println(prefix + "Каталог: " + file.getCanonicalPath());
             File[] list = file.listFiles();
             for (int i = list.length; --i >= 0; ) {
-                findFiles(list[i]);
+                findFiles(list[i], prefix);
             }
         } else {
-            System.out.println("\t" + file.getCanonicalPath());
+            System.out.println("\t" + prefix + "Файл: " + file.getCanonicalPath());
         }
     }
 }
