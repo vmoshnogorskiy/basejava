@@ -49,7 +49,7 @@ public abstract class AbstractStorageTest {
     public void update() throws Exception {
         Resume expected = ResumeTestData.getTestResume(UUID_2, "Dummy");
         storage.update(expected);
-        Assert.assertSame(expected, storage.get(expected.getUuid()));
+        Assert.assertEquals(expected, storage.get(expected.getUuid()));
         assertGet(expected);
     }
 

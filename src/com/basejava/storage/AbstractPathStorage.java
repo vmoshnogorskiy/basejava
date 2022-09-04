@@ -16,7 +16,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     private Path directory;
 
     protected AbstractPathStorage(String dir) {
-        directory = Paths.get(dir);
+        Path directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + "is not directory or is not writable");
@@ -36,7 +36,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     public int size() {
         try {
-            return (int) Files.size(directory);
+            return (int) Files.list(directory).count();
         } catch (IOException e) {
             throw new StorageException(directory + " Path can't read", null, e);
         }

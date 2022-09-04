@@ -96,7 +96,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             throw new StorageException(directory + " is empty");
         }
         for (File file : files) {
-            if (!directory.isDirectory()) {
+            if (!file.isDirectory()) {
                 list.add(doGet(file));
             }
         }
