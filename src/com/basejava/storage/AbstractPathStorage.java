@@ -2,6 +2,7 @@ package com.basejava.storage;
 
 import com.basejava.exception.StorageException;
 import com.basejava.model.Resume;
+import com.basejava.storage.serialize.SerializeStrategy;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -14,14 +15,16 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     private Path directory;
+    protected SerializeStrategy serializeStrategy;
 
-    protected AbstractPathStorage(String dir) {
+    protected AbstractPathStorage(String dir, SerializeStrategy serializeStrategy) {
         Path directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + "is not directory or is not writable");
         }
         this.directory = directory;
+        this.serializeStrategy = serializeStrategy;
     }
 
     @Override
@@ -105,7 +108,11 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         return list;
     }
 
-    protected abstract void doWrite(Resume r, OutputStream path) throws IOException;
+    protected void doWrite(Resume r, OutputStream path) throws IOException {
+        serializeStrategy.doWrite(r, path);
+    }
 
-    protected abstract Resume doRead(InputStream path) throws IOException;
+    protected Resume doRead(InputStream path) throws IOException {
+        return serializeStrategy.doRead(path);
+    }
 }
