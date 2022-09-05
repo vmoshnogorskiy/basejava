@@ -18,7 +18,7 @@ public class FileStorageStrategy implements SerializeStrategy {
         try (ObjectInputStream ois = new ObjectInputStream(inStream)) {
             return (Resume) ois.readObject();
         } catch (ClassNotFoundException e) {
-            throw new StorageException("Error read resume", null, e);
+            throw new StorageException("Error read resume", e);
         }
     }
 }

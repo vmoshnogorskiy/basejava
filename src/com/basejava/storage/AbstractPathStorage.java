@@ -41,7 +41,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         try {
             return (int) Files.list(directory).count();
         } catch (IOException e) {
-            throw new StorageException(directory + " Path can't read", null, e);
+            throw new StorageException(directory + " Path can't read", e);
         }
     }
 
@@ -100,7 +100,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         try {
             paths = Files.list(directory).collect(Collectors.toList());
         } catch (IOException e) {
-            throw new StorageException("Can't read path " + directory, null, e);
+            throw new StorageException("Can't read path " + directory, e);
         }
         for (Path path : paths) {
             list.add(doGet(path));
