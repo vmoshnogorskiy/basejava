@@ -5,9 +5,10 @@ import com.basejava.model.Resume;
 import com.basejava.storage.serialize.SerializeStrategy;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class FileStorage extends AbstractStorage<File> {
     private final File directory;
@@ -27,10 +28,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] list = directory.listFiles();
-        if (list == null) {
-            throw new StorageException("Directory is already empty");
-        }
+        File[] list = getListFiles();
         for (File file : list) {
             doDelete(file);
         }
@@ -38,11 +36,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        if (list == null) {
-            throw new StorageException("Unable to read directory contents");
-        }
-        return list.length;
+        return getListFiles().length;
     }
 
     @Override
@@ -93,17 +87,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> doGetAll() {
-        List<Resume> list = new ArrayList<>();
-        File[] files = directory.listFiles();
-        if (files == null) {
-            throw new StorageException(directory + " is empty");
-        }
-        for (File file : files) {
-            if (!file.isDirectory()) {
-                list.add(doGet(file));
-            }
-        }
-        return list;
+        return Arrays.stream(getListFiles()).map(file -> doGet(file)).collect(Collectors.toList());
     }
 
     protected void doWrite(Resume r, OutputStream file) throws IOException {
@@ -112,5 +96,13 @@ public class FileStorage extends AbstractStorage<File> {
 
     protected Resume doRead(InputStream file) throws IOException {
         return serializeStrategy.doRead(file);
+    }
+
+    private File[] getListFiles() {
+        File[] list = directory.listFiles();
+        if (list == null) {
+            throw new StorageException("Unable to read directory contents");
+        }
+        return list;
     }
 }
