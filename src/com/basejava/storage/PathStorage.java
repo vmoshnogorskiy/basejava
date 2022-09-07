@@ -12,12 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
     protected SerializeStrategy serializeStrategy;
 
-    protected AbstractPathStorage(String dir, SerializeStrategy serializeStrategy) {
+    protected PathStorage(String dir, SerializeStrategy serializeStrategy) {
         Path directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
@@ -29,20 +30,12 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::doDelete);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error", null, e);
-        }
+        getListFiles().forEach(this::doDelete);
     }
 
     @Override
     public int size() {
-        try {
-            return (int) Files.list(directory).count();
-        } catch (IOException e) {
-            throw new StorageException(directory + " Path can't read", e);
-        }
+        return (int) getListFiles().count();
     }
 
     @Override
@@ -96,12 +89,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected List<Resume> doGetAll() {
         List<Resume> list = new ArrayList<>();
-        List<Path> paths;
-        try {
-            paths = Files.list(directory).collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new StorageException("Can't read path " + directory, e);
-        }
+        List<Path> paths = getListFiles().collect(Collectors.toList());
         for (Path path : paths) {
             list.add(doGet(path));
         }
@@ -114,5 +102,14 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     protected Resume doRead(InputStream path) throws IOException {
         return serializeStrategy.doRead(path);
+    }
+
+    private Stream<Path> getListFiles() {
+        try {
+            return Files.list(directory);
+        } catch (IOException e) {
+            throw new StorageException("Can't read path " + directory, e);
+        }
+
     }
 }
