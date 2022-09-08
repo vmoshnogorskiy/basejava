@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
-    protected SerializeStrategy serializeStrategy;
+    private final SerializeStrategy serializeStrategy;
 
     protected PathStorage(String dir, SerializeStrategy serializeStrategy) {
         Path directory = Paths.get(dir);
@@ -51,7 +51,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume resume, Path path) {
         try {
-            doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
+            serializeStrategy.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path write error " + path, path.getFileName().toString(), e);
         }
@@ -80,7 +80,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return doRead(new BufferedInputStream(Files.newInputStream(path)));
+            return serializeStrategy.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Unable to read path " + path, path.getFileName().toString(), e);
         }
@@ -94,14 +94,6 @@ public class PathStorage extends AbstractStorage<Path> {
             list.add(doGet(path));
         }
         return list;
-    }
-
-    protected void doWrite(Resume r, OutputStream path) throws IOException {
-        serializeStrategy.doWrite(r, path);
-    }
-
-    protected Resume doRead(InputStream path) throws IOException {
-        return serializeStrategy.doRead(path);
     }
 
     private Stream<Path> getListFiles() {

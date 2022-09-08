@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class FileStorage extends AbstractStorage<File> {
     private final File directory;
-    protected SerializeStrategy serializeStrategy;
+    private final SerializeStrategy serializeStrategy;
 
     protected FileStorage(File directory, SerializeStrategy serializeStrategy) {
         Objects.requireNonNull(directory, "directory must not be null");
@@ -52,7 +52,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume resume, File file) {
         try {
-            doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            serializeStrategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File write error", file.getName(), e);
         }
@@ -79,7 +79,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return doRead(new BufferedInputStream(new FileInputStream(file)));
+            return serializeStrategy.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Unable to read file", file.getName(), e);
         }
@@ -88,14 +88,6 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> doGetAll() {
         return Arrays.stream(getListFiles()).map(file -> doGet(file)).collect(Collectors.toList());
-    }
-
-    protected void doWrite(Resume r, OutputStream file) throws IOException {
-        serializeStrategy.doWrite(r, file);
-    }
-
-    protected Resume doRead(InputStream file) throws IOException {
-        return serializeStrategy.doRead(file);
     }
 
     private File[] getListFiles() {
