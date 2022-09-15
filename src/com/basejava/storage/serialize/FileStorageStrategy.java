@@ -7,8 +7,8 @@ import java.io.*;
 
 public class FileStorageStrategy implements SerializeStrategy {
     @Override
-    public void doWrite(Resume r, OutputStream OutStream) throws IOException {
-        try (ObjectOutputStream oos = new ObjectOutputStream(OutStream)) {
+    public void doWrite(Resume r, OutputStream outStream) throws IOException {
+        try (ObjectOutputStream oos = new ObjectOutputStream(outStream)) {
             oos.writeObject(r);
         }
     }

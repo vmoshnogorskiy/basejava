@@ -1,15 +1,24 @@
 package com.basejava.model;
 
+import com.basejava.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final Link homePage;
-    private final List<Property> properties;
+    private Link homePage;
+    private List<Property> properties;
+
+    public Organization() {
+    }
 
     public Organization(String name, String url, Property... properties) {
         this(new Link(name, url), Arrays.asList(properties));
@@ -46,14 +55,20 @@ public class Organization implements Serializable {
                 '}';
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Property implements Serializable {
         private static final long serialVersionUID = 1L;
-        private final LocalDate startDate;
-        private final LocalDate endDate;
-        private final String description;
-        private final String title;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate startDate;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate endDate;
+        private String description;
+        private String title;
 
         public static final LocalDate NOW = LocalDate.of(3000, 1, 1);
+
+        public Property() {
+        }
 
         public Property(LocalDate startDate, String description, String title) {
             this(startDate, NOW, title, description);
