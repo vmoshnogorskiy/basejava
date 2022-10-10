@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MainStream {
 
@@ -13,9 +12,9 @@ public class MainStream {
         System.out.println("Минимально возможное число:\n" + minValue(intValues));
 
         List<Integer> list = new ArrayList<>();
-        list.add(12);
+        list.add(8);
         list.add(11);
-        list.add(13);
+        list.add(18);
         list.add(3);
         System.out.println("Четное или нечетное:\n" + oddOrEven(list));
     }
@@ -33,16 +32,13 @@ public class MainStream {
                 .filter(x -> x % 2 != 0)
                 .count();
         return integers.stream()
-                .flatMap(x -> getApproveInt(oddCounter, x))
+                .filter(x -> isApproveInt(oddCounter, x))
                 .collect(Collectors.toList());
     }
 
-    private static Stream<Integer> getApproveInt(int count, Integer num) {
+    private static boolean isApproveInt(int count, Integer num) {
         if (count % 2 == 0 && num % 2 != 0) {
-            return Stream.of(num);
-        } else if (count % 2 != 0 && num % 2 == 0) {
-            return Stream.of(num);
-        }
-        return Stream.empty();
+            return true;
+        } else return count % 2 != 0 && num % 2 == 0;
     }
 }
