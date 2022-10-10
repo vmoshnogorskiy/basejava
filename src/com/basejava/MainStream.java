@@ -32,7 +32,6 @@ public class MainStream {
         int oddCounter = (int) integers.stream()
                 .filter(x -> x % 2 != 0)
                 .count();
-        System.out.println(oddCounter);
         return integers.stream()
                 .flatMap(x -> getApproveInt(oddCounter, x))
                 .collect(Collectors.toList());
