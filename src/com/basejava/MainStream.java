@@ -1,10 +1,10 @@
 package com.basejava;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.lang.Math.pow;
 
 public class MainStream {
 
@@ -15,29 +15,35 @@ public class MainStream {
         List<Integer> list = new ArrayList<>();
         list.add(12);
         list.add(11);
+        list.add(13);
         list.add(3);
         System.out.println("Четное или нечетное:\n" + oddOrEven(list));
     }
 
     private static int minValue(int[] values) {
-        AtomicInteger power = new AtomicInteger();
-        Optional<Integer> result = Arrays.stream(values)
+        return Arrays.stream(values)
                 .distinct()
-                .boxed()
-                .sorted(Comparator.reverseOrder())
-                .flatMap(x -> {
-                    Stream<Integer> stream = Stream.of(x * (int) (pow(10, power.get())));
-                    power.getAndIncrement();
-                    return stream;
-                })
-                .reduce((acc, x) -> acc + x);
-        return result.get();
+                .sorted()
+                .reduce((acc, x) -> acc * 10 + x)
+                .getAsInt();
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
-        integers.stream()
-                //.collect()
-                .forEach(System.out::println);
-        return null;
+        int oddCounter = (int) integers.stream()
+                .filter(x -> x % 2 != 0)
+                .count();
+        System.out.println(oddCounter);
+        return integers.stream()
+                .flatMap(x -> getApproveInt(oddCounter, x))
+                .collect(Collectors.toList());
+    }
+
+    private static Stream<Integer> getApproveInt(int count, Integer num) {
+        if (count % 2 == 0 && num % 2 != 0) {
+            return Stream.of(num);
+        } else if (count % 2 != 0 && num % 2 == 0) {
+            return Stream.of(num);
+        }
+        return Stream.empty();
     }
 }
