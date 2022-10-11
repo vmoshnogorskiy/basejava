@@ -23,8 +23,7 @@ public class MainStream {
         return Arrays.stream(values)
                 .distinct()
                 .sorted()
-                .reduce((acc, x) -> acc * 10 + x)
-                .getAsInt();
+                .reduce(0, (acc, x) -> acc * 10 + x);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
