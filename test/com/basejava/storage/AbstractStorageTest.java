@@ -1,5 +1,6 @@
 package com.basejava.storage;
 
+import com.basejava.Config;
 import com.basejava.exception.ExistStorageException;
 import com.basejava.exception.NotExistStorageException;
 import com.basejava.model.Resume;
@@ -13,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("C:\\01\\basejava\\basejava\\storage");
+    protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
     protected final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
