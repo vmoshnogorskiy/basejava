@@ -1,19 +1,12 @@
 package com.basejava.storage;
 
-import com.basejava.model.*;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.basejava.model.ContactType.*;
-import static com.basejava.model.SectionType.*;
+import com.basejava.model.Resume;
 
 public class ResumeTestData {
 
     protected static Resume getTestResume(String uuid, String fullName) {
         Resume r = new Resume(uuid, fullName);
-
+/*
         r.setContact(PHONE, "+79xxxxxxxxx");
         r.setContact(EMAIL, "test@testmail.com");
         r.setContact(SKYPE, "test_skype");
@@ -106,7 +99,7 @@ public class ResumeTestData {
         );
         educationList.add(school);
         r.setSection(EDUCATION, new OrganizationSection(educationList));
-
+        */
         return r;
     }
 }
