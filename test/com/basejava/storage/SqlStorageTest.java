@@ -3,6 +3,7 @@ package com.basejava.storage;
 import com.basejava.Config;
 import com.basejava.exception.NotExistStorageException;
 import com.basejava.model.Resume;
+import com.basejava.sql.SqlHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,9 +27,9 @@ public class SqlStorageTest {
     private static final Resume RESUME_4 = ResumeTestData.getTestResume(UUID_4, "Михайлов Михаил Михайлович");
 
     public SqlStorageTest() {
-        storage = new SqlStorage(Config.getInstance().getDbUrl(),
+        storage = new SqlStorage(new SqlHelper(Config.getInstance().getDbUrl(),
                 Config.getInstance().getDbUser(),
-                Config.getInstance().getDbPassword());
+                Config.getInstance().getDbPassword()));
     }
 
     @Before
