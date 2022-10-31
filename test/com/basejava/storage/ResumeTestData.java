@@ -2,17 +2,31 @@ package com.basejava.storage;
 
 import com.basejava.model.Resume;
 
+import static com.basejava.model.ContactType.*;
+
 public class ResumeTestData {
 
-    protected static Resume getTestResume(String uuid, String fullName) {
+    protected static Resume getTestResume(String uuid, String fullName, String phone, String email, String skype,
+                                          String github, String homepage) {
         Resume r = new Resume(uuid, fullName);
-/*
+
+        r.setContact(PHONE, phone);
+        r.setContact(EMAIL, email);
+        r.setContact(SKYPE, skype);
+        r.setContact(PROFILE_GITHUB, github);
+        r.setContact(HOMEPAGE, homepage);
+        return r;
+    }
+
+        protected static Resume getTestResume(String uuid, String fullName) {
+            Resume r = new Resume(uuid, fullName);
+
         r.setContact(PHONE, "+79xxxxxxxxx");
         r.setContact(EMAIL, "test@testmail.com");
         r.setContact(SKYPE, "test_skype");
         r.setContact(PROFILE_GITHUB, "test_profile_github");
         r.setContact(HOMEPAGE, "www.test_homepage.com");
-
+/*
         r.setSection(OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по" +
                         " Java Web и Enterprise технологиям"
                 )
