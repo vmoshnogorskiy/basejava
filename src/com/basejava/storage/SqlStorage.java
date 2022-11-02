@@ -39,15 +39,8 @@ public class SqlStorage implements Storage {
                     throw new NotExistStorageException(r.getUuid());
                 }
             }
-            try (PreparedStatement ps = conn.prepareStatement("UPDATE contact SET value = ? WHERE resume_uuid = ? AND type = ?")) {
-                for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
-                    ps.setString(1, e.getValue());
-                    ps.setString(2, r.getUuid());
-                    ps.setString(3, e.getKey().name());
-                    ps.addBatch();
-                }
-                ps.executeBatch();
-            }
+            contactDelete(r);
+            contactInsert(conn, r);
             return null;
         });
     }
@@ -61,15 +54,7 @@ public class SqlStorage implements Storage {
                 ps.setString(2, r.getUuid());
                 ps.execute();
             }
-            try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES(?, ?, ?)")) {
-                for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
-                    ps.setString(1, r.getUuid());
-                    ps.setString(2, e.getKey().name());
-                    ps.setString(3, e.getValue());
-                    ps.addBatch();
-                }
-                ps.executeBatch();
-            }
+            contactInsert(conn, r);
             return null;
         });
     }
@@ -146,5 +131,25 @@ public class SqlStorage implements Storage {
             rs.next();
             return rs.getInt("count");
         });
+    }
+
+    private void contactDelete(Resume r) {
+        sqlHelper.execute("DELETE FROM contact WHERE resume_uuid = ?", (ps) -> {
+            ps.setString(1, r.getUuid());
+            ps.execute();
+            return null;
+        });
+    }
+
+    private void contactInsert(Connection conn, Resume r) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES(?, ?, ?)")) {
+            for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
+                ps.setString(1, r.getUuid());
+                ps.setString(2, e.getKey().name());
+                ps.setString(3, e.getValue());
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        }
     }
 }
