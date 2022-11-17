@@ -1,8 +1,13 @@
 package com.basejava.storage;
 
-import com.basejava.model.Resume;
+import com.basejava.model.*;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.basejava.model.ContactType.*;
+import static com.basejava.model.SectionType.*;
 
 public class ResumeTestData {
 
@@ -26,7 +31,7 @@ public class ResumeTestData {
         r.setContact(SKYPE, "test_skype");
         r.setContact(PROFILE_GITHUB, "test_profile_github");
         r.setContact(HOMEPAGE, "www.test_homepage.com");
-/*
+
         r.setSection(OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по" +
                         " Java Web и Enterprise технологиям"
                 )
@@ -113,7 +118,6 @@ public class ResumeTestData {
         );
         educationList.add(school);
         r.setSection(EDUCATION, new OrganizationSection(educationList));
-        */
         return r;
     }
 }
