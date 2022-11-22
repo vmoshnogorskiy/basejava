@@ -1,26 +1,35 @@
 package com.basejava.web;
 
 import com.basejava.Config;
-import com.basejava.model.Resume;
 import com.basejava.storage.Storage;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class ResumeServlet extends HttpServlet {
+
+    private Storage storage;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        storage = Config.getInstance().getSqlStorage();
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+        request.setAttribute("resumes", storage.getAllSorted());
+        request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+        /*request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
-        /*String name = request.getParameter("name");
+        String name = request.getParameter("name");
         response.getWriter().write(name == null ? "Hello Resumes!" : "Hello " + name + '!');
-         */
-        final Storage storage = Config.getInstance().getSqlStorage();
+
 
         PrintWriter wr = response.getWriter();
         wr.write("<!DOCTYPE html>\n" +
@@ -43,7 +52,7 @@ public class ResumeServlet extends HttpServlet {
         }
         wr.write("\t</table>\n" +
                 "</body>\n" +
-                "</html>");
+                "</html>");*/
     }
 
     @Override
