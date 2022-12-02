@@ -22,9 +22,7 @@ public class SqlStorageTest {
     private static final String UUID_4 = UUID.randomUUID().toString();
     private static final String UUID_NOT_EXIST = "dummy";
 
-    private static final Resume RESUME_1 = ResumeTestData.getTestResume(UUID_1, "Иванов Иван Иванович",
-            "+79090992115", "ivanovii@mail.com", "Ivanov_skype", "Ivanov_profile_github",
-            "www.ivanov_homepage.com");
+    private static final Resume RESUME_1 = ResumeTestData.getTestResume(UUID_1, "Иванов Иван Иванович");
     private static final Resume RESUME_2 = ResumeTestData.getTestResume(UUID_2, "Петров Петр Петрович",
             "+79000017765", "petrovpp@mail.com", "Petrov_skype", "Petrov_profile_github",
             "www.petrov_homepage.com");
