@@ -5,7 +5,7 @@
 
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; cherset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="css/style.css">
     <jsp:useBean id="resume" type="com.basejava.model.Resume" scope="request"/>
     <title>Резюме ${resume.fullName}</title>
