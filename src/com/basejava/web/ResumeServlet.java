@@ -3,6 +3,7 @@ package com.basejava.web;
 import com.basejava.Config;
 import com.basejava.model.*;
 import com.basejava.storage.Storage;
+import com.basejava.util.DateUtil;
 import com.basejava.util.HtmlUtil;
 
 import javax.servlet.ServletConfig;
@@ -42,21 +43,43 @@ public class ResumeServlet extends HttpServlet {
             case "view":
                 r = storage.get(uuid);
                 break;
+            case "add":
+                r = Resume.EMPTY;
+                break;
             case "edit":
                 r = storage.get(uuid);
-                for(SectionType type : new SectionType[]{SectionType.EXPERIENCE, SectionType.EDUCATION}) {
-                    OrganizationSection section = (OrganizationSection) r.getSection(type);
-                    List<Organization> emptyFirstOrganizations = new ArrayList<>();
-                    emptyFirstOrganizations.add(Organization.EMPTY);
-                    if(section != null) {
-                        for(Organization org : section.getOrganizations()) {
-                            List<Organization.Property> emptyFirstPositions = new ArrayList<>();
-                            emptyFirstPositions.add(Organization.Property.EMPTY);
-                            emptyFirstPositions.addAll(org.getProperties());
-                            emptyFirstOrganizations.add(new Organization(org.getHomePage(), emptyFirstPositions));
-                        }
+                for (SectionType type : SectionType.values()) {
+                    Section section = r.getSection(type);
+                    switch (type) {
+                        case OBJECTIVE:
+                        case PERSONAL:
+                            if (section == null) {
+                                section = TextSection.EMPTY;
+                            }
+                            break;
+                        case ACHIEVEMENT:
+                        case QUALIFICATION:
+                            if (section == null) {
+                                section = ListSection.EMPTY;
+                            }
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            OrganizationSection orgSection = (OrganizationSection) r.getSection(type);
+                            List<Organization> emptyFirstOrganizations = new ArrayList<>();
+                            emptyFirstOrganizations.add(Organization.EMPTY);
+                            if (orgSection != null) {
+                                for (Organization org : orgSection.getOrganizations()) {
+                                    List<Organization.Property> emptyFirstPositions = new ArrayList<>();
+                                    emptyFirstPositions.add(Organization.Property.EMPTY);
+                                    emptyFirstPositions.addAll(org.getProperties());
+                                    emptyFirstOrganizations.add(new Organization(org.getHomePage(), emptyFirstPositions));
+                                }
+                            }
+                            section = new OrganizationSection(emptyFirstOrganizations);
+                            break;
                     }
-                    r.setSection(type, new OrganizationSection(emptyFirstOrganizations));
+                    r.setSection(type, section);
                 }
                 break;
             default:
@@ -73,20 +96,28 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume r = storage.get(uuid);
-        r.setFullName(fullName);
+        final boolean isCreate = (uuid == null || uuid.length() == 0);
+        Resume r;
+        if (isCreate) {
+            r = new Resume(fullName);
+        } else {
+            r = storage.get(uuid);
+            r.setFullName(fullName);
+        }
+
+
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
             if (HtmlUtil.isEmpty(value)) {
-                r.setContact(type, value);
-            } else {
                 r.getContacts().remove(type);
+            } else {
+                r.setContact(type, value);
             }
         }
         for (SectionType type : SectionType.values()) {
             String value = request.getParameter(type.name());
             String[] values = request.getParameterValues(type.name());
-            if(HtmlUtil.isEmpty(value) && values.length < 2) {
+            if (HtmlUtil.isEmpty(value) && values.length < 2) {
                 r.getSections().remove(type);
             } else {
                 switch (type) {
@@ -103,17 +134,33 @@ public class ResumeServlet extends HttpServlet {
                         List<Organization> orgs = new ArrayList<>();
                         String[] urls = request.getParameterValues(type.name() + "_url");
                         for (int i = 0; i < values.length; i++) {
-                            List<Organization.Property> positions = new ArrayList<>();
                             String name = values[i];
-                            if(!HtmlUtil.isEmpty(name)) {
+                            if (!HtmlUtil.isEmpty(name)) {
+                                List<Organization.Property> positions = new ArrayList<>();
                                 String pfx = type.name() + i;
+                                String[] startDates = request.getParameterValues(pfx + "startDate");
+                                String[] endDates = request.getParameterValues(pfx + "endDate");
+                                String[] titles = request.getParameterValues(pfx + "title");
+                                String[] descriptions = request.getParameterValues(pfx + "description");
+                                for (int j = 0; j < titles.length; j++) {
+                                    if (!HtmlUtil.isEmpty(titles[j])) {
+                                        positions.add(new Organization.Property(DateUtil.parse(startDates[j]),
+                                                DateUtil.parse(endDates[j]), titles[j], descriptions[j]));
+                                    }
+                                }
+                                orgs.add(new Organization(new Link(name, urls[i]), positions));
                             }
                         }
+                        r.setSection(type, new OrganizationSection(orgs));
                         break;
                 }
             }
         }
-        storage.update(r);
+        if (isCreate) {
+            storage.save(r);
+        } else {
+            storage.update(r);
+        }
         response.sendRedirect("resume");
     }
 }
