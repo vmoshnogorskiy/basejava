@@ -9,7 +9,8 @@ import java.nio.file.Files;
 import java.util.Properties;
 
 public class Config {
-    protected static final File PROPS = new File("C:/01/basejava/basejava/config/resumes.properties");
+    protected static final File PROPS = new File("C:\\01\\tomcat\\apache-tomcat-8.5.83\\webapps\\resumes\\" +
+            "WEB-INF\\classes\\com\\basejava\\model\\config\\resumes.properties");
     private static final Config INSTANCE = new Config();
     private final File storageDir;
     private final Storage sqlStorage;
